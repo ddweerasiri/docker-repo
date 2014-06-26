@@ -1,0 +1,22 @@
+FROM ddweerasiri/jdk7-oracle
+MAINTAINER Denis Weerasiri < ddweerasiri [at] gmail {dot} com>
+RUN apt-get -y install tomcat7 tomcat7-admin
+
+RUN sed -i "s#</tomcat-users>##g" /etc/tomcat7/tomcat-users.xml; \
+    echo '  <role rolename="manager-gui"/>' >>  /etc/tomcat7/tomcat-users.xml; \
+    echo '  <role rolename="manager-script"/>' >>  /etc/tomcat7/tomcat-users.xml; \
+    echo '  <role rolename="manager-jmx"/>' >>  /etc/tomcat7/tomcat-users.xml; \
+    echo '  <role rolename="manager-status"/>' >>  /etc/tomcat7/tomcat-users.xml; \
+    echo '  <role rolename="admin-gui"/>' >>  /etc/tomcat7/tomcat-users.xml; \
+    echo '  <role rolename="admin-script"/>' >>  /etc/tomcat7/tomcat-users.xml; \
+    echo '  <user username="admin" password="admin" roles="manager-gui, manager-script, manager-jmx, manager-status, admin-gui, admin-script"/>' >>  /etc/tomcat7/tomcat-users.xml; \
+    echo '</tomcat-users>' >> /etc/tomcat7/tomcat-users.xml
+
+RUN echo "JAVA_HOME=/usr/lib/jvm/java-7-oracle" >> /etc/default/tomcat7
+
+EXPOSE 8080
+
+#deploy the sample webapp
+#RUN wget -O /var/lib/tomcat7/webapps/sample.war http://tomcat.apache.org/tomcat-6.0-doc/appdev/sample/sample.war 
+
+CMD service tomcat7 start && tail -f /var/log/tomcat7/catalina.out
