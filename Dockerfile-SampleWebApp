@@ -1,0 +1,6 @@
+FROM ddweerasiri/tomcat7
+MAINTAINER Denis Weerasiri < ddweerasiri [at] gmail {dot} com>
+
+#deploy the sample webapp
+RUN wget -O /var/lib/tomcat7/webapps/sample.war http://tomcat.apache.org/tomcat-6.0-doc/appdev/sample/sample.war
+
